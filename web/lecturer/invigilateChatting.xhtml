@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://java.sun.com/jsf/html"
+       xmlns:f="http://java.sun.com/jsf/core"
+       xmlns:p="http://primefaces.org/ui"
+       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Exam Management System</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/#{invigilateExamView.role}Template.xhtml">
+            <ui:define name="content">
+                <p:panelGrid columns="2" style="margin-bottom:10px" >
+                    <p:outputLabel value="Module:" />
+                    <p:outputLabel value="#{invigilateExamView.examSession.fkExamId.fkModuleCode.pkModuleCode}  #{invigilateExamView.examSession.fkExamId.fkModuleCode.ukModuleName}" />
+                    <p:outputLabel value="Exam Start Time:" />
+                    <p:outputLabel value="#{invigilateExamView.sdfDateTime.format(invigilateExamView.examSession.examStartTime)}" />
+                    <p:outputLabel value="Exam End Time:" />
+                    <p:outputLabel value="#{invigilateExamView.sdfDateTime.format(invigilateExamView.examSession.examEndTime)}" />
+                    <p:outputLabel value="Current Time:" />
+                    <p:clock></p:clock>
+                </p:panelGrid>
+                <c:forEach var="student" items="#{invigilateExamView.examSession.userCollection}" varStatus="status">
+                    <div style="#{status.index%2==0?'float: left;':'float: right;'}" >
+                        <p:outputLabel value="Student  ---  #{student.userId}, #{student.userName}" style="font-weight: bold" />
+                        <h:form id="chatform#{status.index}">
+                            <p:inputTextarea cols="57" rows="9" readonly="true" id="chatArea#{status.index}" value="#{chatRoom.tsAllChats(student.userId)}"/>
+                            <br/>
+                            <p:inputText size="8" placeholder="name" value="#{chatParticipant.name}" disabled="true"/>
+                            <p:inputText size="28" placeholder="message" value="#{chatParticipant.message}" id="chatMessage#{status.index}"/>
+                            <p:commandButton value="Send" process="@form" update="@form" action="#{chatParticipant.sendMessage(student.userId)}"/>	
+                            <p:socket channel="/chat">
+                                <p:ajax event="message" update=":chatform#{status.index}:chatArea#{status.index} :chatform#{status.index}:chatMessage#{status.index}"/>
+                            </p:socket>
+                        </h:form>
+                    </div>
+                </c:forEach>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

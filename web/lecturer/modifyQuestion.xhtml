@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Exam Management System</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/lecturerTemplate.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                        <p:outputLabel for="module" value="Module:" />
+                        <p:selectOneMenu id="module" value="#{questionModifyView.selectedModule}" >
+                            <f:selectItems value="#{questionModifyView.modules}" var="m"
+                                           itemLabel="#{m.pkModuleCode} #{m.ukModuleName}" itemValue="#{m.pkModuleCode}" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="Search Subject Tags" action="#{questionModifyView.searchSubjectTags()}"  update=":modifyQuestion:subject" ajax="true"></p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+                <h:form id="modifyQuestion">
+                    <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                        <p:outputLabel for="subject" value="Subject Tag:" />
+                        <p:selectOneMenu id="subject" value="#{questionModifyView.selectedSubject}" label="Subject Tags" style="width: 280px;">
+                            <f:selectItems value="#{questionModifyView.selectedModuleObj.subjectTagCollection}" var="s" itemLabel="#{s.ukTagName}" itemValue="#{s.pkTagId}" />
+                        </p:selectOneMenu>
+                        <p:commandButton update="table" action="#{questionModifyView.searchQuestions()}" value="Search Questions" ajax="true"></p:commandButton> 
+                    </h:panelGrid>
+
+                    <p:outputLabel for="table" value="Notice: Question Type, 'WA'--Written Answer, 'MS'--Multiple Choice Single Answer, 'MS'--Multiple Choice Multiple Answers" /><hr/>
+                    <p:dataTable id="table" var="question" value="#{questionModifyView.questions}" >
+                        <p:column headerText="Question No" style="width: 10px;" >
+                            <h:outputText value="#{question.questionSequence}" />
+                        </p:column>
+                        <p:column headerText="Version No" style="width: 10px;" >
+                            <h:outputText value="#{question.versionNumber}" />
+                        </p:column>
+                        <p:column headerText="Question Type" style="width: 10px;" >
+                            <h:outputText value="#{question.questionType}" />
+                        </p:column>
+                        <p:column headerText="Mark" style="width: 10px;" >
+                            <h:outputText value="#{question.mark}" />
+                        </p:column>
+                        <p:column headerText="Question Text" style="width: 100px;" >
+                            <h:outputText value="#{question.questionText}" />
+                        </p:column>
+                        <p:column headerText="Create By" style="width: 30px;" >
+                            <h:outputText value="#{question.fkCreatedBy.userName}" />
+                        </p:column>
+                        <p:column headerText="Create On" style="width: 25px;" >
+                            <h:outputText value="#{questionModifyView.sdfDateTime.format(question.createdOn)}" />
+                        </p:column>
+                        <p:column headerText="Update" style="width: 5px;" >
+                            <p:commandLink ajax="false" action="#{questionModifyView.modify(question.pkQuestionId)}" value="Modify"></p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

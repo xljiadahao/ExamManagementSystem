@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Exam Management System</title>
+        <!-- <h:outputStylesheet library="theme" name="primefaces-sunny/theme.css"/> -->
+        <!-- <link type="text/css" rel="stylesheet" href="theme/primefaces-sunny/theme.css" /> -->
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/lecturerTemplate.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <p:fieldset legend="Create Exam Paper">
+                        <h:panelGrid columns="3" style="margin-bottom:10px">
+                            <p:outputLabel for="modules" value="Modules:" />
+                            <p:selectOneMenu id="modules" style="width: 330px;" value="#{createExamPaperView.selectedModule}" required="true" requiredMessage="Please select one Module"  >
+                                <f:selectItems value="#{createExamPaperView.modules}" var="m"
+                                               itemLabel="#{m.pkModuleCode} #{m.ukModuleName}" itemValue="#{m.pkModuleCode}" />
+                            </p:selectOneMenu>
+                            <p:message for="modules"/>
+                            <p:outputLabel for="sectionNumber" value="Section Quantity:" />
+                            <p:selectOneMenu id="sectionNumber" style="width: 330px;" value="#{createExamPaperView.sectionNumber}" required="true" requiredMessage="Please select the number of Section">
+                                <f:selectItem itemLabel="1" itemValue="1" />
+                                <f:selectItem itemLabel="2" itemValue="2" />
+                                <f:selectItem itemLabel="3" itemValue="3" />
+                                <f:selectItem itemLabel="4" itemValue="4" />
+                                <f:selectItem itemLabel="5" itemValue="5" />
+                            </p:selectOneMenu>
+                            <p:message for="sectionNumber"/>                            
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <br/>
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-9"></div>
+                            <div class="ui-grid-col-3">
+                                <p:commandButton value="Generate Exam Paper" action="#{createExamPaperView.generateExamPaper()}" ajax="false"/>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

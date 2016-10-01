@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Exam Management System</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/lecturerTemplate.xhtml">
+            <ui:define name="content">
+                <h:form id="modifyQuestion">
+                    <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                        <h:outputLabel for="questionNo" value="Question Number: " />
+                        <p:inputText id="questionNo" value="#{modifyQuestionMCView.question.questionSequence}" size="18" disabled="true"/>
+                        <p:message for="questionNo"/>
+                        <h:outputLabel for="versionNo" value="Version Number: " />
+                        <p:inputText id="versionNo" value="#{modifyQuestionMCView.question.versionNumber}" size="18" disabled="true"/>
+                        <p:message for="versionNo"/>
+                        <p:outputLabel for="questionType" value="Select Type:" style="font-weight: bold" />
+                        <p:selectOneRadio id="questionType" value="#{questionMCView.selectedType}" required="true" requiredMessage="Please choose the Question Type.">
+                            <f:selectItem itemLabel="Multiple Choices Single Answer" itemValue="MS" />
+                            <f:selectItem itemLabel="Multiple Choices Multiple Answer" itemValue="MM" />
+                        </p:selectOneRadio>
+                        <p:message for="questionType"/>
+                        <p:outputLabel for="marks" value="Marks:" style="font-weight: bold" />
+                        <p:spinner id="marks"  placeholder="1" value="#{modifyQuestionMCView.marks}" min="1" max="50" required="true" requiredMessage="Please enter Marks for the Question."/>
+                        <p:message for="marks"/>
+                        <p:outputLabel for="input" value="Question Text:" style="font-weight: bold" />
+                        <p:inputTextarea id="input" rows="3" cols="50" value="#{modifyQuestionMCView.questionContent}" required="true" requiredMessage="Please fill with the Question Text."/>
+                        <p:message for="input"/>
+                    </h:panelGrid>
+                    <p:panelGrid columns="6">
+                        <p:outputLabel for="opt1" value="Option 1 :" />
+                        <p:inputText id="opt1" value="#{modifyQuestionMCView.opt1}" required="true" requiredMessage="Please fill with Option 1."/>
+                        <p:message for="opt1"/>
+                        <p:outputLabel for="opt2" value="Option 2 :" />
+                        <p:inputText id="opt2" value="#{modifyQuestionMCView.opt2}" required="true" requiredMessage="Please fill with Option 2."/>
+                        <p:message for="opt2"/>
+                        <p:outputLabel for="opt3" value="Option 3 :" />
+                        <p:inputText id="opt3" value="#{modifyQuestionMCView.opt3}" required="true" requiredMessage="Please fill with Option 3."/>
+                        <p:message for="opt3"/>
+                        <p:outputLabel for="opt4" value="Option 4 :" />
+                        <p:inputText id="opt4" value="#{modifyQuestionMCView.opt4}" required="true" requiredMessage="Please fill with Option 4."/>
+                        <p:message for="opt4"/>
+                    </p:panelGrid>
+                    <p:commandButton value="Update Question" action="#{modifyQuestionMCView.save()}" ajax="false"></p:commandButton>
+                </h:form>                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

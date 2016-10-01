@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Exam Management System</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/#{examScheduleView.role}Template.xhtml">
+            <ui:define name="content">
+                <h:form id="examSchedule">
+                    <h:panelGrid columns="4">
+                        <h:outputLabel for="currentDate" value="Current Date: " style="font-weight: bold" />
+                        <p:inputText id="currentDate" value="#{examScheduleView.currentDate}" size="18" disabled="true"/>
+                        <h:outputLabel for="clock" value="Current Time: " style="font-weight: bold" />
+                        <p:clock id="clock"/>
+                    </h:panelGrid>
+                    <hr/>
+                    <p:dataTable var="examSession" value="#{examScheduleView.examSessions}">
+                        <p:column headerText="Module Name" style="width: 80px" >
+                            <h:outputText value="#{examSession.fkExamId.fkModuleCode.pkModuleCode}  #{examSession.fkExamId.fkModuleCode.ukModuleName}" />
+                        </p:column>
+                        <p:column headerText="Start Time" style="width: 60px" >
+                            <h:outputText value="#{examScheduleView.sdfDateTime.format(examSession.examStartTime)}" />
+                        </p:column>
+                        <p:column headerText="End Time" style="width: 60px" >
+                            <h:outputText value="#{examScheduleView.sdfDateTime.format(examSession.examEndTime)}" />
+                        </p:column>
+                        <p:column headerText="Location" style="width: 40px" >
+                            <h:outputText value="#{examSession.location}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

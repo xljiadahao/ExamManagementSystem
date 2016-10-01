@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Exam Management System</title>
+        <!-- <h:outputStylesheet library="theme" name="primefaces-sunny/theme.css"/> -->
+        <!-- <link type="text/css" rel="stylesheet" href="theme/primefaces-sunny/theme.css" /> -->
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/adminTemplate.xhtml">
+            <ui:define name="content">
+                <h:form id="lecturerRegister">
+                    <p:fieldset legend="User Infomation">
+                        <h:panelGrid columns="3" style="margin-bottom:10px">
+                            <p:outputLabel for="idField" value="User ID:" />
+                            <p:inputText id="idField" value="#{userRegistrationView.userId}" size="25" required="true" requiredMessage="Please enter User ID."/>
+                            <p:message for="idField"/>
+                            <p:outputLabel for="name" value="User Name:" />
+                            <p:inputText id="name" value="#{userRegistrationView.userName}" size="25" required="true" requiredMessage="Please enter User Name."/>
+                            <p:message for="name"/>
+                            <p:outputLabel for="role" value="User Role:" />
+                            <p:selectOneRadio id="role" value="#{userRegistrationView.role}" required="true" requiredMessage="Please at least select User Role.">
+                                <f:selectItem itemLabel="Lecturer" itemValue="lecturer" />
+                                <f:selectItem itemLabel="Student" itemValue="student" />
+                            </p:selectOneRadio>
+                            <p:message for="role"/>
+                            <p:outputLabel for="modules" value="Modules Taught/Enrolled:" /> 
+                            <p:selectCheckboxMenu id="modules" style="width:300px;" value="#{userRegistrationView.selectedModules}" label="Course Modules" filter="true" filterMatchMode="startsWith" 
+                                                  panelStyle="width:380px" required="true" requiredMessage="Please at least select one Module.">
+                                <f:selectItems value="#{userRegistrationView.modules}" var="m" itemLabel="#{m.pkModuleCode} #{m.ukModuleName}" itemValue="#{m.pkModuleCode}" />
+                            </p:selectCheckboxMenu>
+                            <p:message for="modules"/>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <hr/>
+                    <p:commandButton value="Submit" action="#{userRegistrationView.userRegister()}" oncomplete="PF('dlg').show()" icon="ui-icon-check" ajax="false"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

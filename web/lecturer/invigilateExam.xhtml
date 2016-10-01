@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Exam Management System</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/lecturerTemplate.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <p:panelGrid columns="2" style="margin-bottom:10px" >
+                        <p:outputLabel value="Module:" />
+                        <p:outputLabel value="#{invigilateExamView.examSession.fkExamId.fkModuleCode.pkModuleCode}  #{invigilateExamView.examSession.fkExamId.fkModuleCode.ukModuleName}" />
+                        <p:outputLabel value="Total Score:" />
+                        <p:outputLabel value="#{invigilateExamView.totalScore}" />
+                        <p:outputLabel value="Exam Start Time:" />
+                        <p:outputLabel value="#{invigilateExamView.sdfDateTime.format(invigilateExamView.examSession.examStartTime)}" />
+                        <p:outputLabel value="Exam End Time:" />
+                        <p:outputLabel value="#{invigilateExamView.sdfDateTime.format(invigilateExamView.examSession.examEndTime)}" />
+                        <p:outputLabel value="Chat Room:" />
+                        <p:commandButton action="/lecturer/invigilateChatting.xhtml" ajax="false" value="Go to Chat Room!!"></p:commandButton>
+                    </p:panelGrid>
+                    <p:clock></p:clock>
+                </h:form>
+                <hr/>   
+                <h:form id="currentExam">
+                    <p:dataTable var="student" value="#{invigilateExamView.examSession.userCollection}">
+                        <p:column headerText="Student ID" style="width: 80px;" >
+                            <h:outputText value="#{student.userId}" />
+                        </p:column>
+                        <p:column headerText="Student Name" style="width: 80px;" >
+                            <h:outputText value="#{student.userName}" />
+                        </p:column>
+                        <p:column headerText="Exam Detail" style="width: 60px" >
+                            <h:commandLink value="Exam Detail" action="#{invigilateExamDetailView.forwordExamDetail(student.userId, invigilateExamView.examSession.pkExamSessionId)}"></h:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

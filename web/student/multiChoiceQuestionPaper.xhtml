@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Exam Management System</title>
+        <!-- <h:outputStylesheet library="theme" name="primefaces-sunny/theme.css"/> -->
+        <!-- <link type="text/css" rel="stylesheet" href="theme/primefaces-sunny/theme.css" /> -->
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/studentTemplate.xhtml">
+            <ui:define name="content">
+                <h:panelGrid columns="4" style="margin-bottom:10px">
+                    <p:outputLabel for="startTime" value="Start Time:"/>
+                    <p:inputText id="startTime" value="#{sittingExamView.startTime}" size="18" disabled="true"/>
+                    <p:outputLabel for="endTime" value="End Time:"/>
+                    <p:inputText id="endTime" value="#{sittingExamView.endTime}" size="18" disabled="true"/>
+                </h:panelGrid>
+                <p:clock></p:clock>
+                <h:form id="examPaper">
+                    <br/>
+                    <p:fieldset legend="#{sittingExamView.questionView},  #{sittingExamView.sectionView},  #{sittingExamView.moduleName} ">
+                        <h:panelGrid columns="2" style="margin-bottom:10px">  
+                            <p:outputLabel for="mark" value="Mark:"/>
+                            <p:inputText id="mark" value="#{sittingExamView.question.mark}" size="10" disabled="true"/>
+                            <p:outputLabel for="question" value="Question:"/>
+                            <p:inputTextarea id="question" rows="2" cols="90" value="#{sittingExamView.question.questionText}" disabled="true" />
+                            <p:outputLabel for="answer" value="Answer:"/> 
+                            <p:selectManyCheckbox id="answer" value="#{sittingExamView.answerMM}" layout="grid" columns="2" required="true" requiredMessage="Please choose your answer.">
+                                <f:selectItems value="#{sittingExamView.multipleChoice}" var="m" itemLabel="#{m.questionMultipleChoiceOptionText}" itemValue="#{m.questionMultipleChoiceOptionText}" />
+                            </p:selectManyCheckbox>
+                        </h:panelGrid>
+                        <p:message for="answer"/>
+                    </p:fieldset>
+                    <br/>
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-10"></div>
+                            <div class="ui-grid-col-2">
+                                <p:commandButton value="Submit" action="#{sittingExamView.submit()}" ajax="false"/>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                </h:form>
+                <h:form id="chatform">
+                    <p:fieldset legend="Instant Messaging" toggleable="true" toggleSpeed="500">
+                        <p:inputTextarea cols="50" rows="7" readonly="true" id="chatArea" value="#{chatRoom.tsAllChats(sittingExamView.student.userId)}"/>
+                        <br/>
+                        <p:inputText size="8" placeholder="name" value="#{chatParticipant.name}" disabled="true"/>
+                        <p:inputText size="28" placeholder="message" value="#{chatParticipant.message}" id="chatMessage"/>
+                        <p:commandButton value="Send" process="@form" update="@form" action="#{chatParticipant.sendMessage(sittingExamView.student.userId)}"/>	
+                        <p:socket channel="/chat">
+                            <p:ajax event="message" update=":chatform:chatArea :chatform:chatMessage"/>
+                        </p:socket>
+                    </p:fieldset>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

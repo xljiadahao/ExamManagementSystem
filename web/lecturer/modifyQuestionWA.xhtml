@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Exam Management System</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/lecturerTemplate.xhtml">
+            <ui:define name="content">
+                <h:form id="modifyQuestion">
+                    <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                        <h:outputLabel for="questionNo" value="Question Number: " />
+                        <p:inputText id="questionNo" value="#{modifyQuestionWAView.question.questionSequence}" size="18" disabled="true"/>
+                        <p:message for="questionNo"/>
+                        <h:outputLabel for="versionNo" value="Version Number: " />
+                        <p:inputText id="versionNo" value="#{modifyQuestionWAView.question.versionNumber}" size="18" disabled="true"/>
+                        <p:message for="versionNo"/>
+                        <h:outputLabel for="questionType" value="Question Type: " />
+                        <p:inputText id="questionType" value="Written Answer" size="18" disabled="true"/>
+                        <p:message for="questionType"/>
+                        <p:outputLabel for="marks" value="Marks:" style="font-weight: bold"/>
+                        <p:spinner id="marks"  placeholder="1" value="#{modifyQuestionWAView.marks}" min="1" max="50" required="true" requiredMessage="Please enter Marks for the Question."/>
+                        <p:message for="marks"/>
+                        <p:outputLabel for="input" value="Question Text:" style="font-weight: bold" />
+                        <p:inputTextarea id="input" rows="3" cols="50" value="#{modifyQuestionWAView.questionContent}" required="true" requiredMessage="Please fill with the Question Text."/>
+                        <p:message for="input"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Update Question" action="#{modifyQuestionWAView.save()}" ajax="false"></p:commandButton>
+                </h:form>                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

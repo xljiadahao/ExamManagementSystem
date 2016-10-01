@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Exam Management System</title>
+        <!-- <h:outputStylesheet library="theme" name="primefaces-sunny/theme.css"/> -->
+        <!-- <link type="text/css" rel="stylesheet" href="theme/primefaces-sunny/theme.css" /> -->
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/lecturerTemplate.xhtml">
+            <ui:define name="content">
+                <p:fieldset legend="Section #{createExamPaperView.currentSection}">
+                    <h:form id="f">
+                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                            <p:outputLabel for="sectionType" value="Section Type:" style="font-weight: bold; font-size: larger"/>
+                            <p:selectOneMenu id="sectionType" style="width: 150px" value="#{createExamPaperView.selectedSectionType}">
+                                <f:selectItem itemLabel="Manually" itemValue="M" />
+                                <f:selectItem itemLabel="Automatically" itemValue="A" />
+                                <f:ajax event="change" execute="sectionType" render=":manuSection :autoSection" listener="#{createExamPaperView.changeSectionType()}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </h:form>
+                    <h:form id="manuSection" style="#{createExamPaperView.manuDisplay}">
+                        <h:panelGrid columns="3" style="margin-bottom:10px">
+                            <p:outputLabel for="sectionName" value="Section Name:" /> 
+                            <p:inputText id="sectionName" value="#{createExamPaperView.sectionName}" size="25" />
+                            <p:outputLabel value="Notice: If not enter the Section Name, default section name 'Section #{createExamPaperView.currentSection}' will be saved." /> 
+                            <p:outputLabel for="subTags" value="Subject Tags:" /> 
+                            <p:selectOneMenu id="subTags" value="#{createExamPaperView.selectedSubject}" label="Subject Tag" style="width: 330px;">
+                                <f:selectItems value="#{createExamPaperView.currentModule.subjectTagCollection}" var="s" itemLabel="#{s.ukTagName}" itemValue="#{s.pkTagId}" />
+                            </p:selectOneMenu>
+                            <p:commandButton value="Search Questions" action="#{createExamPaperView.searchQuestionsBySubjectTag()}" ajax="true" update=":manuSection:checkboxDT"></p:commandButton>
+                        </h:panelGrid>
+                        <br/>
+                        <p:commandButton value="Add Questions for Current Section" action="#{createExamPaperView.addToCurrentSection()}" update=":manuSection:subTags :manuSection:checkboxDT :manuSection:qofcurrents"></p:commandButton>
+                        <p:dataTable id="checkboxDT" var="question"  value="#{createExamPaperView.questions}" selection="#{createExamPaperView.selectQuestions}" rowKey="#{question.pkQuestionId}" style="margin-bottom:0; ">
+                            <f:facet name="header" >
+                                Select Questions from Searching Result
+                            </f:facet>
+                            <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                            <p:column headerText="Question Number" style="width: 10px;" >
+                                <h:outputText value="#{question.questionSequence}" />
+                            </p:column>
+                            <p:column headerText="Version Number" style="width: 10px;" >
+                                <h:outputText value="#{question.versionNumber}" />
+                            </p:column>
+                            <p:column headerText="Question Type" style="width: 10px;" >
+                                <h:outputText value="#{question.questionType}" />
+                            </p:column>
+                            <p:column headerText="Mark" style="width: 10px;" >
+                                <h:outputText value="#{question.mark}" />
+                            </p:column>
+                            <p:column headerText="Question Text" style="width: 100px;" >
+                                <h:outputText value="#{question.questionText}" />
+                            </p:column>
+                            <p:column headerText="Create By" style="width: 30px;" >
+                                <h:outputText value="#{question.fkCreatedBy.userName}" />
+                            </p:column>
+                            <p:column headerText="Create On" style="width: 25px;" >
+                                <h:outputText value="#{createExamPaperView.sdfDateTime.format(question.createdOn)}" />
+                            </p:column>
+                        </p:dataTable>
+                        <br/>
+                        <p:outputLabel for="qofcurrents" value="Questions for Current Section:" style="font-weight: bold; color: blue;"/> 
+                        <p:dataList id="qofcurrents" value="#{createExamPaperView.questionsForCurrentSection}" var="q" type="ordered">
+                            <f:facet name="header">
+                                Questions for Current Section
+                            </f:facet>
+                            #{q.questionSequence}, #{q.versionNumber}, #{q.questionType}, #{q.mark}, #{q.questionText}, #{q.fkCreatedBy.userName}, #{createExamPaperView.sdfDateTime.format(q.createdOn)}
+                        </p:dataList>
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-row">
+                                <div class="ui-grid-col-9"></div>
+                                <div class="ui-grid-col-3">
+                                    <p:commandButton value="#{createExamPaperView.buttonValue}" action="#{createExamPaperView.mannuallySaveForCurrentSection()}" ajax="false"/><hr/>
+                                    <p:outputLabel value="Add Question Before #{createExamPaperView.noticeMsg}" style="font-weight: bold; color: blue;"/> 
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                    <h:form id="autoSection" style="#{createExamPaperView.autoDisplay}">
+                        <h:panelGrid columns="4" style="margin-bottom:10px">
+                            <p:outputLabel for="sectionNameAuto" value="Section Name:" /> 
+                            <p:inputText id="sectionNameAuto" value="#{createExamPaperView.sectionName}" size="25" />
+                            <p:outputLabel value="Notice: If not enter the Section Name, default section name 'Section #{createExamPaperView.currentSection}' will be saved." /> 
+                            <p:messages for="sectionNameAuto"/>  
+                            <p:outputLabel for="subTags" value="Subject Tags:" /> 
+                            <p:selectCheckboxMenu id="subTags" style="width:300px;" value="#{createExamPaperView.selectedSubTagsForAuto}" label="Subject Tags" filter="true" filterMatchMode="startsWith" 
+                                                  panelStyle="width:380px" required="true" requiredMessage="Please at least select one subject tag.">
+                                <f:selectItems value="#{createExamPaperView.currentModule.subjectTagCollection}" var="s" itemLabel="#{s.ukTagName}" itemValue="#{s.pkTagId}" />
+                            </p:selectCheckboxMenu>
+                            <p:outputLabel value="Subject Tag just based on the Module" style="font-weight: bold; color: blue;"/> 
+                            <p:messages for="subTags"/>                        
+                            <p:outputLabel for="mark" value="Total Mark:" />
+                            <p:spinner id="mark"  placeholder="1" value="#{createExamPaperView.markForDynamicCreate}" min="1" max="100" required="true" requiredMessage="Please enter Marks for the Section."/>
+                            <p:outputLabel value="Questions will be generate approaching to the marks input" style="font-weight: bold; color: blue;"/> 
+                            <p:message for="mark"/>
+                        </h:panelGrid>
+                        <br/>
+                        <p:commandButton value="Generate Questions for Current Section" action="#{createExamPaperView.dynamicallySaveForCurrentSection()}" update=":autoSection:qofcurrentsauto"></p:commandButton>
+                        <br/>
+                        <p:outputLabel for="qofcurrentsauto" value="Questions for Current Section:" style="font-weight: bold; color: blue;"/> 
+                        <p:dataList id="qofcurrentsauto" value="#{createExamPaperView.questionsForCurrentSection}" var="q" type="ordered">
+                            <f:facet name="header">
+                                Questions for Current Section (#{createExamPaperView.generateMark})
+                            </f:facet>
+                            #{q.questionSequence}, #{q.versionNumber}, #{q.questionType}, #{q.mark}, #{q.questionText}, #{q.fkCreatedBy.userName}, #{createExamPaperView.sdfDateTime.format(q.createdOn)}
+                        </p:dataList>
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-row">
+                                <div class="ui-grid-col-9"></div>
+                                <div class="ui-grid-col-3">
+                                    <p:commandButton value="#{createExamPaperView.buttonValue}" action="#{createExamPaperView.saveAutoGenerateSection()}" ajax="false"/><hr/>
+                                    <p:outputLabel value="Generate Before #{createExamPaperView.noticeMsg}" style="font-weight: bold; color: blue;"/> 
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

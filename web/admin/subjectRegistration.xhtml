@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Exam Management System</title>
+        <!-- <h:outputStylesheet library="theme" name="primefaces-sunny/theme.css"/> -->
+        <!-- <link type="text/css" rel="stylesheet" href="theme/primefaces-sunny/theme.css" /> -->
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/adminTemplate.xhtml">
+            <ui:define name="content">
+                <h:form id="subjectRegister">
+                    <p:fieldset legend="Subject Infomation">
+                        <h:panelGrid columns="3" style="margin-bottom:10px">
+                            <p:outputLabel for="modules" value="Modules:" /> 
+                            <p:selectOneMenu id="modules" style="width:340px;" value="#{subjectRegistrationView.moduleCode}" label="Course Modules" filter="true" filterMatchMode="startsWith" 
+                                                  panelStyle="width:380px" required="true" requiredMessage="Please select one Module.">
+                                <f:selectItems value="#{subjectRegistrationView.modules}" var="m" itemLabel="#{m.pkModuleCode} #{m.ukModuleName}" itemValue="#{m.pkModuleCode}" />
+                            </p:selectOneMenu>
+                            <p:message for="modules"/>
+                            <p:outputLabel for="name" value="Subject Name:" />
+                            <p:inputText id="name" value="#{subjectRegistrationView.subjectName}" size="25" required="true" requiredMessage="Please enter Subject Name."/>
+                            <p:message for="name"/>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <hr/>
+                    <p:commandButton value="Submit" action="#{subjectRegistrationView.subjectRegister()}" oncomplete="PF('dlg').show()" icon="ui-icon-check" ajax="false"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+
+

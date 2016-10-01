@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Exam Management System</title>
+        <!-- <h:outputStylesheet library="theme" name="primefaces-sunny/theme.css"/> -->
+        <!-- <link type="text/css" rel="stylesheet" href="theme/primefaces-sunny/theme.css" /> -->
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/adminTemplate.xhtml">
+            <ui:define name="content">
+                <h:form id="moduleRegister">
+                    <p:fieldset legend="Module Infomation">
+                        <h:panelGrid columns="3" style="margin-bottom:10px">
+                            <p:outputLabel for="idField" value="Module Code:" />
+                            <p:inputText id="idField" value="#{moduleRegistrationView.moduleCode}" size="25" required="true" requiredMessage="Please enter Module Code."/>
+                            <p:message for="idField"/>
+                            <p:outputLabel for="name" value="Module Name:" />
+                            <p:inputText id="name" value="#{moduleRegistrationView.moduleName}" size="25" required="true" requiredMessage="Please enter Module Name."/>
+                            <p:message for="name"/>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <hr/>
+                    <p:commandButton value="Submit" action="#{moduleRegistrationView.moduleRegister()}" oncomplete="PF('dlg').show()" icon="ui-icon-check" ajax="false"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

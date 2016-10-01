@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Exam Management System</title>
+    </h:head>
+    <h:body>
+        <!-- <frameset rows="84,*,29" cols="*" frameborder="yes" border="6" framespacing="6" style="background-color:#666666" bordercolor="#33CCFF">
+            <frame src="html/top_index.html" name="topFrame" scrolling="NO" noresize="true" frameborder="yes" bordercolor="#3399CC"></frame>
+            <frameset rows="*" cols="199,*" framespacing="0" frameborder="NO" border="0" >
+                <frame src="html/left_admin.html" name="leftFrame" scrolling="NO" noresize="true"></frame>
+                <p:calendar mode="inline" pattern="dd/MMM/yyyy" navigator="true" showOn="button"/>
+            </frameset>
+            <frame src="html/bottom.html" name="footFrame" scrolling="no" noresize="true"></frame>
+        </frameset> -->
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="140" header="Exam Management System" resizable="false" closable="false" collapsible="false">
+                <h:outputText style="font-size:xx-large; font-weight:bold;" value="Exam Management System" />
+                <h:outputText style="font-size:smaller; font-weight:lighter;" value=" --Team3 FT" />
+                <div style="float:right;"><h:graphicImage name="globle.gif" library="images" alt="Image Description for globle"/></div> 
+            </p:layoutUnit>
+            <p:layoutUnit position="south" size="50" footer="@copyright2014 Team3 FT, ISS, NUS $ Member: Xu Lei, Shao Xi, Chandrakala, Guhan" resizable="false" closable="false" collapsible="false">
+                <!-- <h:outputText value="South unit content." /> -->
+            </p:layoutUnit>
+            <p:layoutUnit position="west" size="335" header="Navigation Admin #{loginSession.userName}" resizable="false" closable="false" collapsible="true">
+                <p:themeSwitcher style="width:300px">
+                    <f:selectItem itemLabel="Theme For Current Page" itemValue="" />  
+                    <f:selectItems value="#{utility.themes}" />
+                </p:themeSwitcher> 
+                <p:calendar mode="inline" pattern="dd/MMM/yyyy" navigator="true" showOn="button" timeZone="true"/>
+                <h:form>
+                    <p:menu toggleable="true" style="width:300px">
+                        <p:submenu label="Maintain Application">
+                            <p:menuitem value="User Register" icon="ui-icon-disk" action="/admin/userRegistration.xhtml" ajax="false"/>
+                            <p:menuitem value="Module Register" icon="ui-icon-disk" action="/admin/moduleRegistration.xhtml" ajax="false"/>
+                            <p:menuitem value="Subject Register" icon="ui-icon-disk" action="/admin/subjectRegistration.xhtml" ajax="false"/>
+                        </p:submenu>
+                        <p:submenu label="Invigilate Exams">
+                            <p:menuitem value="Exams Schedule" icon="ui-icon-home" action="/common/examSchedule.xhtml" ajax="false"/>
+                            <c:forEach var="e" items="#{loginSession.enrolledLectures}"> 
+                                <p:menuitem value="Current Exam #{e.fkExamId.fkModuleCode.pkModuleCode}" action="#{invigilateExamView.invigilateCurrentExam(e.pkExamSessionId)}" icon="ui-icon-star" ajax="false"/>
+                            </c:forEach>
+                        </p:submenu>
+                        <p:submenu label="Logout">
+                            <p:menuitem value="Logout" icon="ui-icon-extlink" ajax="false" action="#{loginSession.logout()}"/>
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+            <!-- <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">
+                <h:outputText value="Right unit content." />
+            </p:layoutUnit> -->
+            <p:layoutUnit position="center">
+                <ui:insert name="content">
+                    <h:outputText style="font-size:x-large; font-weight:bold; color:royalblue;" value="Welcome to Exam Management System, Administrator #{loginSession.userName}" />
+                </ui:insert>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>
+

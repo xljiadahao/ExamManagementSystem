@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Exam Management System</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/lecturerTemplate.xhtml">
+            <ui:define name="content">
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="module" value="Module:"/>
+                    <h:outputText id="module" value="#{addingQuestionPartsView_original.module.pkModuleCode}  #{addingQuestionPartsView_original.module.ukModuleName}" />
+                    <p:outputLabel for="tag" value="Subject Tag:" />
+                    <h:outputText id="tag" value="#{addingQuestionPartsView_original.subjectTags}"/>
+                </p:panelGrid>
+                <h:form>
+                    <p:fieldset id="field" legend="Part #{addingQuestionPartsView_original.currentPart}" style="margin-bottom:20px"> 
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:outputLabel for="input" value="Question Text:" />
+                            <p:inputTextarea id="input" rows="3" cols="50" required="true" requiredMessage="Please fill with the Question Text."/>
+                            <p:outputLabel for="radio" value="Select Type:"/>
+                            <p:selectOneRadio id="radio" value="#{addingQuestionPartsView_original.selectedType}" >
+                                <f:selectItem itemLabel="Written Answer" itemValue="WA"/>
+                                <f:selectItem itemLabel="Multiple Choices Single Answer" itemValue="MS" />
+                                <f:selectItem itemLabel="Multiple Choices Multiple Answer" itemValue="MM" />
+                                <p:ajax update="grid" event="change" listener="#{addingQuestionPartsView_original.onChange()}" />
+                            </p:selectOneRadio>
+                        </h:panelGrid>
+                        <p:panelGrid id="grid" columns="4" style="#{addingQuestionPartsView_original.display}">
+                            <p:outputLabel for="opt1" value="Option 1 :"  />
+                            <p:inputText id="opt1" />
+                            <p:outputLabel for="opt2" value="Option 2 :" />
+                            <p:inputText id="opt2" />
+                            <p:outputLabel for="opt3" value="Option 3 :" />
+                            <p:inputText id="opt3" />
+                            <p:outputLabel for="opt4" value="Option 4 :" />
+                            <p:inputText id="opt4" />
+                        </p:panelGrid>
+                    </p:fieldset>
+                    <p:message for="input"/>
+                    <p:commandButton action="#{addingQuestionPartsView_original.save()}" value="Save" update="field" ajax="#{addingQuestionPartsView_original.ajax}"></p:commandButton>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://java.sun.com/jsf/html"
+       xmlns:f="http://java.sun.com/jsf/core"
+       xmlns:p="http://primefaces.org/ui"
+       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Exam Management System</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/#{invigilateExamDetailView.invigilaterRole}Template.xhtml">
+            <ui:define name="content">
+                <h:form id ="studentExamDetail">
+                    <p:panelGrid columns="2" style="margin-bottom:10px">
+                        <p:outputLabel for="studentId" value="Student ID:" />
+                        <p:outputLabel id="studentId" value="#{invigilateExamDetailView.student.userId}"/>
+                        <p:outputLabel for="studentName" value="Student Name:" />
+                        <p:outputLabel id="studentName" value="#{invigilateExamDetailView.student.userName}"/>
+                        <p:outputLabel for="examModule" value="Exam Module:" />
+                        <p:outputLabel id="examModule" value="#{invigilateExamDetailView.examSession.fkExamId.fkModuleCode.pkModuleCode} #{invigilateExamDetailView.examSession.fkExamId.fkModuleCode.ukModuleName}"/>
+                        <p:outputLabel for="refresh" value="Refresh:" />
+                        <p:commandButton id="refresh" update="questionNoChartLabel questionScoreChartLabel questionNoChart questionScoreChart" action="#{invigilateExamDetailView.forwordExamDetail(invigilateExamDetailView.student.userId, invigilateExamView.examSession.pkExamSessionId)}" value="Refresh" ajax="true">
+                        </p:commandButton>  
+                    </p:panelGrid>
+                    <hr/><hr/>
+                    <div style="float: left;">
+                        <p:outputLabel id="questionNoChartLabel" style="font-weight: bold" for="questionNoChart" value="Question No. Statistics: Answered No.: #{invigilateExamDetailView.examQuestionNoAnswered}/Total No.: #{invigilateExamDetailView.totalQuestionNo}" />
+                        <p:chart id="questionNoChart" type="pie" model="#{invigilateExamDetailView.pieChartModelQuestionNo}" style="width:600px;height:400px"/>
+                    </div>
+                    <div style="float: right;">
+                        <p:outputLabel id="questionScoreChartLabel" style="font-weight: bold" for="questionScoreChart" value="Question Score Statistics: Answered Score: #{invigilateExamDetailView.answeredScores}/Total Score: #{invigilateExamDetailView.totalScore}" />
+                        <p:chart id="questionScoreChart" type="pie" model="#{invigilateExamDetailView.pieChartModelQuestionScore}" style="width:600px;height:400px"/>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
