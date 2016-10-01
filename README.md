@@ -12,3 +12,26 @@ Installation/Deployment instructions:
 4. Go back to project folder, make sure in persistence.xml, Data Source: ExamSysEJava, Table Generation Strategy: none, 
    'Include All Entity Classes in "ExamManagementSystem_Team3FT_final" Module' checked.
 5. Go to project folder, Server Resources folder, sun-resources.xml, change User and Password to your database user name and password.
+
+
+As the project is not Maven project, we need to include the relevant third party lib, here is Maven equivalent dependencies:
+<dependency>  
+    <groupId>org.primefaces</groupId>  
+    <artifactId>primefaces</artifactId>  
+    <version>5.2</version>  
+</dependency> 
+<dependency>  
+    <groupId>org.primefaces.extensions</groupId>  
+    <artifactId>all-themes</artifactId>  
+    <version>1.0.8</version>  
+</dependency>
+<dependency>
+    <groupId>org.atmosphere</groupId>
+    <artifactId>atmosphere-runtime</artifactId>
+    <version>2.3.0-RC6</version>
+</dependency>
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-api</artifactId>
+    <version>1.7.12</version>
+</dependency>
